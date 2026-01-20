@@ -1,0 +1,49 @@
+networks:
+  dokploy-network:
+    external: true
+
+services:
+  muzey-nginx:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - muzey-web
+  muzey-web:
+    build: .
+    command: ${COMMAND:-sh ./scripts/entrypoint.sh}
+    volumes:
+      - .:/code
+      - ../files/media:/code/media
+    depends_on:
+      - muzey-db
+      - muzey-redis
+    networks:
+      - dokploy-network
+  muzey-db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: django
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: '2309'
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - dokploy-network
+  muzey-redis:
+    image: redis
+    networks:
+      - dokploy-network
+  muzey-rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_PASS=2309
+      - RABBITMQ_DEFAULT_VHOST=vhost
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    networks:
+      - dokploy-network
+volumes:
+  pg_data: null
+  rabbitmq: null

@@ -45,6 +45,13 @@ class UnifiedSearchView(views.APIView):
             Q(title_uz_Cyrl__icontains=query)
         )
 
+        moth_results = models.Moth.objects.filter(
+            Q(title_uz__icontains=query) |
+            Q(title_ru__icontains=query) |
+            Q(title_en__icontains=query) |
+            Q(title_uz_Cyrl__icontains=query)
+        )
+
         events_results = models.Events.objects.filter(
             Q(theme_uz__icontains=query) |
             Q(theme_ru__icontains=query) |
@@ -62,6 +69,7 @@ class UnifiedSearchView(views.APIView):
         management_serializer = serializers.ShortManagementSerializer(management_results, many=True)
         product_serializer = serializers.ShortProductSerializer(product_results, many=True)
         news_serializer = serializers.ShortNewsSerializer(news_results, many=True)
+        moth_serializer = serializers.ShortMothSerializer(moth_results, many=True)
         events_serializer = serializers.ShortEventsSerializer(events_results, many=True)
 
         # Combine all results into a single list with type information
@@ -70,6 +78,7 @@ class UnifiedSearchView(views.APIView):
             add_type_field(management_serializer.data, "management") +
             add_type_field(product_serializer.data, "product") +
             add_type_field(news_serializer.data, "news") +
+            add_type_field(moth_serializer.data, "moth") +
             add_type_field(events_serializer.data, "event")
         )
 

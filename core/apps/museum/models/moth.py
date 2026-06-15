@@ -19,6 +19,12 @@ class Moth(AbstractBaseModel):
     title = models.CharField(max_length=255, verbose_name=_("Sarlavha"))
     text = models.TextField(verbose_name=_("Matn"))
     image = models.ManyToManyField(image.Image, verbose_name=_("Rasm(lar)"))
+    file = models.FileField(
+        upload_to="moth_files",
+        null=True,
+        blank=True,
+        verbose_name=_("Fayl"),
+    )
     type = models.ForeignKey(MothType, on_delete=models.CASCADE, null=True, blank=True, verbose_name=_("Turi"))
     date = models.DateTimeField(null=True, blank=True)
 

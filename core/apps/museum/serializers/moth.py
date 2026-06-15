@@ -31,12 +31,19 @@ class MothTypeSerializer(serializers.ModelSerializer):
 
 class MothSerializer(serializers.ModelSerializer):
     image = ImageSerializer(many=True)
+    file = serializers.SerializerMethodField()
 
     class Meta:
         model = Moth
         fields = ('id', 'title_uz', 'title_ru', 'title_en', 'title_uz_Cyrl',
-                  'image', 'text_uz', 'text_ru', 'text_en', 'text_uz_Cyrl',
+                  'image', 'file', 'text_uz', 'text_ru', 'text_en', 'text_uz_Cyrl',
                   'created_at', 'type', 'date')
+
+    def get_file(self, instance):
+        if not instance.file:
+            return None
+        base_url = "https://muzey.felixits.uz"
+        return f"{base_url}{instance.file.url}"
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

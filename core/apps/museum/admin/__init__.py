@@ -1,5 +1,6 @@
 from .about import *  # noqa
 from .news import *  # noqa
+from .moth import *  # noqa
 from .exhibit import *  # noqa
 from .exhibit_type import *  # noqa
 from .galery  import *  # noqa

@@ -6,6 +6,8 @@ from core.apps.museum import views
 router = DefaultRouter()
 router.register(r'news', views.NewsViewSet, basename='news')
 router.register(r'news-types', views.NewsTypeViewSet, basename='news-type')
+router.register(r'moth', views.MothViewSet, basename='moth')
+router.register(r'moth-types', views.MothTypeViewSet, basename='moth-type')
 router.register(r'galleries', views.GalleryViewSet, basename='gallery')
 router.register(r'exhibits', views.ExhibitViewSet, basename='exhibit')
 router.register(r'exhibit-types', views.ExhibitTypeViewSet, basename='exhibit-type')

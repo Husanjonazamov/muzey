@@ -1,4 +1,5 @@
 from .news import * # noqa
+from .moth import * # noqa
 from .museum_history import * # noqa
 from .events import * # noqa
 from .about import * # noqa
